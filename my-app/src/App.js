@@ -237,7 +237,6 @@ function App() {
       // ctx.scale(-1, 1);
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     };
-
     imageCapture.takePhoto().then((blob) => {
       console.log("Took photo:", blob);
       img.src = URL.createObjectURL(blob);
@@ -282,6 +281,7 @@ function App() {
           ideal: 1080,
           max: 1440,
         },
+        facingMode: "environment",
       }
     }
 
