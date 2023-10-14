@@ -18,6 +18,7 @@ function App() {
           ideal: 1080,
           max: 1440,
         },
+        facingMode: "environment",
       }
     }
 
