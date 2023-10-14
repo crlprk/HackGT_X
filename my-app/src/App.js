@@ -326,7 +326,7 @@ function App() {
     <div className="App">
       <header className = "App-header">
         <button onClick={camera_button}>Start Camera</button>
-        <video className = "mirror" id="video" width="1920" height="1080" autoPlay></video>
+        <video id="video" width="1920" height="1080" autoPlay></video>
         {/* <button onClick={click_photo}>Click Photo</button> */}
         <button onClick={quantize_img}>Take and Quantize Photo</button>
         <img className = "mirror" id = "quantized_img"></img>
