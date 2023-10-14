@@ -205,28 +205,66 @@ function App() {
     }
   };
   
+  // var post_quantize = function() {
+  //   quantize_btn_element.disabled = false;
+  //   input_file_element.disabled = false;
+  //   k_selections_element.disabled = false;
+  //   status_element.textContent = "";
+  // };
+  
   // Handle "Quantize" button.
   function quantize_img() {
-    var orig_img = document.querySelector("#canvas")
+    let video = document.querySelector("#video");
+    let canvas = document.querySelector("#canvas");
+    let ctx = canvas.getContext('2d');
+    let img = new Image();
+    let imageCapture = new ImageCapture(video.srcObject.getVideoTracks()[0]);
+
     var quantized_img_element = document.querySelector("#quantized_img");
     var k = 12;
-    var img = new Image();
-    img.src = orig_img.toDataURL();
+
     img.onload = function() {
-      // Use a combination of requestAnimationFrame and setTimeout
-      // to run quantize/post_quantize after the next repaint, which is
-      // triggered by pre_quantize().
       requestAnimationFrame(function() {
-          setTimeout(function() {
-          // Use a fixed maximum so that k-means works fast.
-          var pixel_dataset = get_pixel_dataset(img, MAX_K_MEANS_PIXELS);
-          var centroids = k_means(pixel_dataset, k);
-          var data_url = quantize(img, centroids);
-          quantized_img_element.src = data_url;
-          }, 0);
+        setTimeout(function() {
+        // Use a fixed maximum so that k-means works fast.
+        var pixel_dataset = get_pixel_dataset(img, MAX_K_MEANS_PIXELS);
+        var centroids = k_means(pixel_dataset, k);
+        var data_url = quantize(img, centroids);
+        quantized_img_element.src = data_url;
+        }, 0);
       });
       pre_quantize();
+      // ctx.scale(-1, 1);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     };
+
+    imageCapture.takePhoto().then((blob) => {
+      console.log("Took photo:", blob);
+      img.src = URL.createObjectURL(blob);
+    })
+    .catch((error) => {
+      console.error("takePhoto() error: ", error);
+    });
+
+    // var orig_img = document.querySelector("#canvas")
+    // var quantized_img_element = document.querySelector("#quantized_img");
+    // var k = 12;
+    // img.src = orig_img.toDataURL();
+    // img.onload = function() {
+    //   // Use a combination of requestAnimationFrame and setTimeout
+    //   // to run quantize/post_quantize after the next repaint, which is
+    //   // triggered by pre_quantize().
+    //   requestAnimationFrame(function() {
+    //       setTimeout(function() {
+    //       // Use a fixed maximum so that k-means works fast.
+    //       var pixel_dataset = get_pixel_dataset(img, MAX_K_MEANS_PIXELS);
+    //       var centroids = k_means(pixel_dataset, k);
+    //       var data_url = quantize(img, centroids);
+    //       quantized_img_element.src = data_url;
+    //       }, 0);
+    //   });
+    //   pre_quantize();
+    // };
   }
 
   async function camera_button() {
@@ -244,7 +282,6 @@ function App() {
           ideal: 1080,
           max: 1440,
         },
-        facingMode: "environment",
       }
     }
 
@@ -256,45 +293,48 @@ function App() {
     }
 
 	  video.srcObject = stream;
-    setAppState(1);
   }
 
-  function click_photo() {
-    let video = document.querySelector("#video");
-    let canvas = document.querySelector("#canvas");
-    let ctx = canvas.getContext('2d');
-    let img = new Image();
-    let imageCapture = new ImageCapture(video.srcObject.getVideoTracks()[0]);
-    let img_blob;
+  // function click_photo() {
+  //   let video = document.querySelector("#video");
+  //   let canvas = document.querySelector("#canvas");
+  //   let ctx = canvas.getContext('2d');
+  //   let img = new Image();
+  //   let imageCapture = new ImageCapture(video.srcObject.getVideoTracks()[0]);
 
-    img.onload = function() {
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    };
+  //   img.onload = function() {
+  //     // ctx.scale(-1, 1);
+  //     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  //   };
 
-    imageCapture.takePhoto().then((blob) => {
-      img_blob = blob;
-      img.src = URL.createObjectURL(blob);
-    })
-    .catch((error) => {
-      console.error("takePhoto() error: ", error);
-    });
+  //   imageCapture.takePhoto().then((blob) => {
+  //     console.log("Took photo:", blob);
+  //     img.src = URL.createObjectURL(blob);
+  //   })
+  //   .catch((error) => {
+  //     console.error("takePhoto() error: ", error);
+  //   });
 
-    console.log("Took photo:", img_blob);
-  }
+  //   // canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+  //  	// let image_data_url = canvas.toDataURL('image/jpeg');
+
+  //  	// data url of the image
+  //  	// console.log(image_data_url);
+  // }
 
   return (
     <div className="App">
       <header className = "App-header">
-        {appState === 0 && <button onClick={camera_button}>PKSL</button>}
-        <video id="video" width="1920" height="1080" autoPlay></video>
-        <button onClick={click_photo}>Click Photo</button>
-        <canvas id="canvas" width="800" height="450"></canvas>
-        <button onClick={quantize_img}>Quantize Photo</button>
-        <img id = "quantized_img"></img>
+        <button onClick={camera_button}>Start Camera</button>
+        <video className = "mirror" id="video" width="800" height="450" autoPlay></video>
+        {/* <button onClick={click_photo}>Click Photo</button> */}
+        <button onClick={quantize_img}>Take and Quantize Photo</button>
+        <img className = "mirror" id = "quantized_img"></img>
+        <canvas hidden id="canvas" width="800" height="450"></canvas>
       </header>
     </div>
   );
 }
-export default App;
 
+export default App;
 
