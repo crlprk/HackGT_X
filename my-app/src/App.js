@@ -221,16 +221,17 @@ function App() {
     let imageCapture = new ImageCapture(video.srcObject.getVideoTracks()[0]);
 
     var quantized_img_element = document.querySelector("#quantized_img");
-    var k = 12;
+    var k = 8;
 
     img.onload = function() {
       requestAnimationFrame(function() {
         setTimeout(function() {
         // Use a fixed maximum so that k-means works fast.
         var pixel_dataset = get_pixel_dataset(img, MAX_K_MEANS_PIXELS);
-        var centroids = k_means(pixel_dataset, k);
+        var centroids = k_means([[0, 18, 25, 255], [0, 95, 115, 255], [233, 216, 166, 255], [238, 155, 0, 255], [174, 32, 18, 255]], 5);
         var data_url = quantize(img, centroids);
         quantized_img_element.src = data_url;
+        Pixastic.process(quantized_img_element, "mosaic", {blockSize:10});
         }, 0);
       });
       pre_quantize();
@@ -326,11 +327,11 @@ function App() {
     <div className="App">
       <header className = "App-header">
         <button onClick={camera_button}>Start Camera</button>
-        <video className = "mirror" id="video" width="800" height="450" autoPlay></video>
+        <video className = "mirror" id="video" width="1920" height="1080" autoPlay></video>
         {/* <button onClick={click_photo}>Click Photo</button> */}
         <button onClick={quantize_img}>Take and Quantize Photo</button>
         <img className = "mirror" id = "quantized_img"></img>
-        <canvas hidden id="canvas" width="800" height="450"></canvas>
+        <canvas id="canvas" width="1920" height="1080"></canvas>
       </header>
     </div>
   );
