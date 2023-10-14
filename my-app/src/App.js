@@ -55,7 +55,7 @@ function App() {
     <div className="App">
       <header className = "App-header">
         {appState === 0 && <button onClick={camera_button}>PKSL</button>}
-        <video className = "mirror" id="video" width="1920" height="1080" autoPlay></video>
+        <video id="video" width="1920" height="1080" autoPlay></video>
         <button onClick={click_photo}>Click Photo</button>
         <img className = "mirror" id = "img"></img>
       </header>
