@@ -231,7 +231,6 @@ function App() {
         var centroids = k_means([[0, 18, 25, 255], [0, 95, 115, 255], [233, 216, 166, 255], [238, 155, 0, 255], [174, 32, 18, 255]], 5);
         var data_url = quantize(img, centroids);
         quantized_img_element.src = data_url;
-        Pixastic.process(quantized_img_element, "mosaic", {blockSize:10});
         }, 0);
       });
       pre_quantize();
