@@ -72,6 +72,13 @@
   z-index: 2;
 }
 
+.toggle {
+  margin-top: 10px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
 @keyframes fade-out {
   from {
     opacity: 1;

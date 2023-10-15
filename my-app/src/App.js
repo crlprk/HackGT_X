@@ -3,6 +3,7 @@ import './App.css';
 import PKSL from './PKSL.svg';
 import shutter from './shutter.svg';
 import viewfinder_preview from './viewfinder.svg';
+import toggle_save from './toggle_save.svg';
 
 function App() {
   const [appState, setAppState] = useState(0); 
@@ -14,6 +15,8 @@ function App() {
   var MAX_K_MEANS_PIXELS = 50000
   var rng_seed;
   var centroids;
+
+  var download_img = false;
 
   //*************************************************
   //* Image/Data Processing
@@ -281,8 +284,6 @@ function App() {
     var k = 12;
 
     img.onload = function() {
-      // img.height = vid_height;
-      // img.width = vid_width;
       console.log("orig", img.height, img.width);
       requestAnimationFrame(function() {
         setTimeout(function() {
@@ -306,9 +307,11 @@ function App() {
     pixel_img.onload = function() {
       pixel_img.height = vid_height;
       pixel_img.width = vid_width;
-      a.href = pixel_img.src;
-      a.download = "pksl.png";
-      a.click();
+      if (download_img) {
+        a.href = pixel_img.src;
+        a.download = "pksl.png";
+        a.click();
+      }
       console.log("img", pixel_img.height, pixel_img.width);
     };
 
@@ -330,17 +333,11 @@ function App() {
 
     const constraints = {video: {
         width: {
-          // min: 640,
-          // ideal: 1280,
-          // max: 1920,
           min: 640,
           ideal: 640,
           max: 640,
         },
         height: {
-          // min: 320,
-          // ideal: 720,
-          // max: 1080,
           min: 320,
           ideal: 320,
           max: 320,
@@ -360,6 +357,11 @@ function App() {
     setAppState(1);
   }
 
+  function toggle_download() {
+    download_img = !download_img;
+    console.log("download_img", download_img);
+  }
+
   function toggle_mirror() {
     let video = document.querySelector("#video");
     let img = document.querySelector("#pixelated_img");
@@ -367,33 +369,6 @@ function App() {
     video.classList.toggle("mirror");
     img.classList.toggle("mirror");
   }
-
-  // function click_photo() {
-  //   let video = document.querySelector("#video");
-  //   let canvas = document.querySelector("#canvas");
-  //   let ctx = canvas.getContext('2d');
-  //   let img = new Image();
-  //   let imageCapture = new ImageCapture(video.srcObject.getVideoTracks()[0]);
-
-  //   img.onload = function() {
-  //     // ctx.scale(-1, 1);
-  //     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-  //   };
-
-  //   imageCapture.takePhoto().then((blob) => {
-  //     console.log("Took photo:", blob);
-  //     img.src = URL.createObjectURL(blob);
-  //   })
-  //   .catch((error) => {
-  //     console.error("takePhoto() error: ", error);
-  //   });
-
-  //   // canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-  //  	// let image_data_url = canvas.toDataURL('image/jpeg');
-
-  //  	// data url of the image
-  //  	// console.log(image_data_url);
-  // }
 
   return (
     <div className="App">
@@ -411,6 +386,9 @@ function App() {
         </div>
         <button className="shutter" onClick={quantize_and_pixelate_img}>
           <img src={shutter} alt="camera button" />
+        </button>
+        <button className="toggle" onClick={toggle_download}>
+          <img src={toggle_save} alt="toggle save" />
         </button>
         {/*<button onClick={toggle_mirror}>Toggle Mirror</button>*/}
         <img hidden className = "mirror" id = "quantized_img"></img>
