@@ -385,13 +385,13 @@ function App() {
     <div className="App">
     <header className = "App-header">
       <div className={appState != 0 ? "splash hidden" : "splash"}>
-        <button className="figma_svg" onClick={camera_button}>
+        <button className="pksl_logo" onClick={camera_button}>
           <img src={PKSL} alt="PKSL logo" />
         </button>
       </div> 
       <div className={appState != 1 ? "camera hidden" : "camera"}>
         <video className="mirror" id="video" autoPlay></video>
-        <button className="figma_svg" onClick={quantize_and_pixelate_img}>
+        <button className="shutter" onClick={quantize_and_pixelate_img}>
           <img src={shutter} alt="camera button" />
         </button>
         <button onClick={toggle_mirror}>Toggle Mirror</button>
