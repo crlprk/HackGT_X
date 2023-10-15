@@ -5,7 +5,7 @@ import shutter from './shutter.svg';
 import viewfinder_preview from './viewfinder.svg';
 
 function App() {
-  const [appState, setAppState] = useState(0);
+  const [appState, setAppState] = useState(0); 
 
   // *************************************************
   // * Constants
@@ -288,7 +288,7 @@ function App() {
         setTimeout(function() {
         // Use a fixed maximum so that k-means works fast.
         var pixel_dataset = get_pixel_dataset(img, MAX_K_MEANS_PIXELS);
-        var centroids = k_means([[230, 93, 159, 255], [147, 212, 181, 255], [100, 97, 194, 255], [240, 218, 177, 255], [99, 75, 125, 255], [43, 169, 180, 255], [240, 246, 232, 255]], 7);
+        var centroids = k_means([[0, 18, 25, 255], [0, 95, 115, 255], [233, 216, 166, 255], [238, 155, 0, 255], [174, 32, 18, 255]], 5);
         console.log("centroids", centroids);
         var data_url = quantize(img, centroids);
         quantized_img_element.src = data_url;
