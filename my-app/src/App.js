@@ -242,6 +242,15 @@ function App() {
       }
     }
     originalImage.src = canvas.toDataURL();
+    let pixelated_img = document.getElementById("pixelated_img");
+    pixelated_img.addEventListener("animationend", () => {
+      pixelated_img.classList.add("hidden");
+    });
+    pixelated_img.classList.remove("hidden");
+    pixelated_img.classList.remove("fade-out");
+    setTimeout(() => {
+      pixelated_img.classList.add("fade-out");
+    }, 1000);
   }
 
   async function getImageCaptureData(imageCapture) {
@@ -389,13 +398,15 @@ function App() {
         </button>
       </div> 
       <div className={appState != 1 ? "camera hidden" : "camera"}>
-        <video className="mirror" id="video" autoPlay></video>
+        <div className="mirror viewfinder">
+          <video className="video" id="video" autoPlay></video>
+          <img className="pixelated" id = "pixelated_img"></img>
+        </div>
         <button className="shutter" onClick={quantize_and_pixelate_img}>
           <img src={shutter} alt="camera button" />
         </button>
         <button onClick={toggle_mirror}>Toggle Mirror</button>
         <img hidden className = "mirror" id = "quantized_img"></img>
-        <img className='mirror' id = "pixelated_img"></img>
         <canvas hidden id="pixel_canvas"></canvas>
         <canvas hidden id="canvas"></canvas>
       </div>
