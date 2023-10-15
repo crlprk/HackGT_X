@@ -207,7 +207,7 @@ function App() {
   
   function pixelateImage() {
     var originalImage = document.querySelector("#pixelated_img");
-    var pixelationFactor = 5;
+    var pixelationFactor = 4;
     const canvas = document.querySelector("#pixel_canvas");
     const context = canvas.getContext("2d");
     const originalWidth = originalImage.width;
@@ -241,24 +241,36 @@ function App() {
     }
     originalImage.src = canvas.toDataURL();
   }
+
+  async function getImageCaptureData(imageCapture) {
+    const {imageWidth, imageHeight} = await imageCapture.getPhotoCapabilities();
+    console.log("getimagedata", imageWidth, imageHeight);
+  }
   
   // Quantize and then pixelate image.
   function quantize_and_pixelate_img() {
     let video = document.querySelector("#video");
     let canvas = document.querySelector("#canvas");
-    let ctx = canvas.getContext('2d');
+    // let ctx = canvas.getContext('2d');
     let img = new Image();
     let imageCapture = new ImageCapture(video.srcObject.getVideoTracks()[0]);
 
+    getImageCaptureData(imageCapture);
+    
     let vid_settings = video.srcObject.getVideoTracks()[0].getSettings();
     let vid_height = vid_settings.height;
     let vid_width = vid_settings.width;
+    
+    console.log("video resolution", vid_height, vid_width);
 
     var quantized_img_element = document.querySelector("#quantized_img");
     var pixel_img = document.querySelector("#pixelated_img");
     var k = 12;
 
     img.onload = function() {
+      // img.height = vid_height;
+      // img.width = vid_width;
+      console.log("orig", img.height, img.width);
       requestAnimationFrame(function() {
         setTimeout(function() {
         // Use a fixed maximum so that k-means works fast.
@@ -271,7 +283,7 @@ function App() {
       });
       pre_quantize();
       // ctx.scale(-1, 1);
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      // ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     };
 
     quantized_img_element.onload = function() {
@@ -280,16 +292,26 @@ function App() {
     };
 
     pixel_img.onload = function() {
-      console.log(vid_height, vid_width);
-      pixel_img.height = vid_height;
-      pixel_img.width = vid_width;
+      // pixel_img.height = vid_height;
+      // pixel_img.width = vid_width;
       console.log("img", pixel_img.height, pixel_img.width);
     };
 
 
-    imageCapture.takePhoto().then((blob) => {
-      console.log("Took photo:", blob);
-      img.src = URL.createObjectURL(blob);
+    // imageCapture.takePhoto().then((blob) => {
+    //   console.log("Took photo:", blob);
+    //   img.src = URL.createObjectURL(blob);
+    // })
+    // .catch((error) => {
+    //   console.error("takePhoto() error: ", error);
+    // });
+
+    imageCapture.grabFrame().then((imageBitmap) => {
+      console.log("Took photo:", imageBitmap);
+      canvas.width = imageBitmap.width;
+      canvas.height = imageBitmap.height;
+      canvas.getContext('2d').drawImage(imageBitmap, 0, 0);
+      img.src = canvas.toDataURL();
     })
     .catch((error) => {
       console.error("takePhoto() error: ", error);
@@ -303,12 +325,12 @@ function App() {
     const constraints = {video: {
         width: {
           // min: 1280,
-          max: 1080,
+          ideal: 320,
           // max: 2560,
         },
         height: {
           // min: 720,
-          max: 1920,
+          ideal: 640,
           // max: 1440,
         },
         facingMode: "environment"
