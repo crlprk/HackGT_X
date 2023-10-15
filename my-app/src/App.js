@@ -250,6 +250,10 @@ function App() {
     let img = new Image();
     let imageCapture = new ImageCapture(video.srcObject.getVideoTracks()[0]);
 
+    let vid_settings = video.srcObject.getVideoTracks()[0].getSettings();
+    let vid_height = vid_settings.height;
+    let vid_width = vid_settings.width;
+
     var quantized_img_element = document.querySelector("#quantized_img");
     var pixel_img = document.querySelector("#pixelated_img");
     var k = 12;
@@ -275,6 +279,14 @@ function App() {
       pixelateImage();
     };
 
+    pixel_img.onload = function() {
+      console.log(vid_height, vid_width);
+      pixel_img.height = vid_height;
+      pixel_img.width = vid_width;
+      console.log("img", pixel_img.height, pixel_img.width);
+    };
+
+
     imageCapture.takePhoto().then((blob) => {
       console.log("Took photo:", blob);
       img.src = URL.createObjectURL(blob);
@@ -290,12 +302,12 @@ function App() {
 
     const constraints = {video: {
         width: {
-          min: 1280,
+          // min: 1280,
           ideal: 1920,
           max: 2560,
         },
         height: {
-          min: 720,
+          // min: 720,
           ideal: 1080,
           max: 1440,
         },
@@ -344,14 +356,14 @@ function App() {
     <div className="App">
     <header className = "App-header">
       <button onClick={camera_button}>Start Camera</button>
-      <video className = "mirror" id="video" width="800" height="450" autoPlay></video>
+      <video className = "mirror" id="video" autoPlay></video>
       {/* <button onClick={click_photo}>Click Photo</button> */}
       <button onClick={quantize_and_pixelate_img}>Pixelate Photo</button>
       <img hidden className = "mirror" id = "quantized_img"></img>
       {/* <button onClick={pixelateImage}>Pixelate Photo</button> */}
       <img className='mirror' id = "pixelated_img"></img>
-      <canvas hidden id="pixel_canvas" width="800" height="450"></canvas>
-      <canvas hidden id="canvas" width="800" height="450"></canvas>
+      <canvas hidden id="pixel_canvas"></canvas>
+      <canvas hidden id="canvas"></canvas>
     </header>
     </div>
   );
