@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import PKSL from './PKSL.svg';
 import shutter from './shutter.svg';
+import viewfinder_preview from './viewfinder.svg';
 
 function App() {
   const [appState, setAppState] = useState(0);
@@ -405,6 +406,7 @@ function App() {
         <div className={/*"mirror*/ "viewfinder"}>
           <video className="video" id="video" autoPlay></video>
           <img className="pixelated" id = "pixelated_img"></img>
+          <img className="viewfinder_preview" src={viewfinder_preview} alt="viewfinder preview" />
         </div>
         <button className="shutter" onClick={quantize_and_pixelate_img}>
           <img src={shutter} alt="camera button" />
