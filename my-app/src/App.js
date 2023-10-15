@@ -332,7 +332,7 @@ function App() {
         {/* <button onClick={click_photo}>Click Photo</button> */}
         <button onClick={quantize_img}>Take and Quantize Photo</button>
         <img className = "mirror" id = "quantized_img"></img>
-        <canvas hidden id="canvas" width="1920" height="1080"></canvas>
+        <canvas hidden id="canvas" width="1080" height="1920"></canvas>
       </header>
     </div>
   );
