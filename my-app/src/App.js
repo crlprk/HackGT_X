@@ -272,16 +272,18 @@ function App() {
 
     const constraints = {video: {
         width: {
-          min: 1280,
-          ideal: 1920,
-          max: 2560,
-        },
-        height: {
           min: 720,
           ideal: 1080,
           max: 1440,
         },
-        facingMode: "environment",
+        height: {
+          min: 1280,
+          ideal: 1920,
+          max: 2560,
+        },
+        facingMode: {
+          exact: "environment"
+        }
       }
     }
 
@@ -330,7 +332,7 @@ function App() {
         {/* <button onClick={click_photo}>Click Photo</button> */}
         <button onClick={quantize_img}>Take and Quantize Photo</button>
         <img className = "mirror" id = "quantized_img"></img>
-        <canvas id="canvas" width="1920" height="1080"></canvas>
+        <canvas hidden id="canvas" width="1080" height="1920"></canvas>
       </header>
     </div>
   );
