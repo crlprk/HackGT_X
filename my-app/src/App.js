@@ -207,7 +207,7 @@ function App() {
   
   function pixelateImage() {
     var originalImage = document.querySelector("#pixelated_img");
-    var pixelationFactor = 8;
+    var pixelationFactor = 5;
     const canvas = document.querySelector("#pixel_canvas");
     const context = canvas.getContext("2d");
     const originalWidth = originalImage.width;
@@ -303,13 +303,13 @@ function App() {
     const constraints = {video: {
         width: {
           // min: 1280,
-          ideal: 1920,
-          max: 2560,
+          max: 1080,
+          // max: 2560,
         },
         height: {
           // min: 720,
-          ideal: 1080,
-          max: 1440,
+          max: 1920,
+          // max: 1440,
         },
         facingMode: "environment"
       }
