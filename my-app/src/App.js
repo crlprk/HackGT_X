@@ -292,8 +292,8 @@ function App() {
     };
 
     pixel_img.onload = function() {
-      // pixel_img.height = vid_height;
-      // pixel_img.width = vid_width;
+      pixel_img.height = vid_height;
+      pixel_img.width = vid_width;
       console.log("img", pixel_img.height, pixel_img.width);
     };
 
@@ -324,16 +324,19 @@ function App() {
 
     const constraints = {video: {
         width: {
-          min: 320,
-          ideal: 320,
-          max: 320,
+          // min: 320,
+          // ideal: 320,
+          // max: 320,
+          min: 640,
+          ideal: 640,
+          max: 640,
           // ideal: 720,
           // max: 1080,
         },
         height: {
-          min: 640,
-          ideal: 640,
-          max: 640,
+          min: 320,
+          ideal: 320,
+          max: 320,
           // ideal: 1280,
           // max: 1920,
         },
