@@ -326,12 +326,12 @@ function App() {
         width: {
           // min: 1280,
           ideal: 320,
-          max: 360,
+          max: 720,
         },
         height: {
           // min: 720,
           ideal: 640,
-          max: 720,
+          max: 1280,
         },
         facingMode: "environment"
       }
@@ -345,6 +345,14 @@ function App() {
     }
 
 	  video.srcObject = stream;
+  }
+
+  function toggle_mirror() {
+    let video = document.querySelector("#video");
+    let img = document.querySelector("#pixelated_img");
+
+    video.classList.toggle("mirror");
+    img.classList.toggle("mirror");
   }
 
   // function click_photo() {
@@ -377,6 +385,7 @@ function App() {
   return (
     <div className="App">
     <header className = "App-header">
+      <button onClick={toggle_mirror}>Toggle Mirror</button>
       <button onClick={camera_button}>Start Camera</button>
       <video className = "mirror" id="video" autoPlay></video>
       {/* <button onClick={click_photo}>Click Photo</button> */}
