@@ -326,12 +326,12 @@ function App() {
         width: {
           // min: 1280,
           ideal: 320,
-          // max: 2560,
+          max: 360,
         },
         height: {
           // min: 720,
           ideal: 640,
-          // max: 1440,
+          max: 720,
         },
         facingMode: "environment"
       }
