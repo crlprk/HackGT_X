@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
+import PKSL from './PKSL.svg';
+import shutter from './shutter.svg';
 
 function App() {
   const [appState, setAppState] = useState(0);
@@ -382,12 +384,16 @@ function App() {
   return (
     <div className="App">
     <header className = "App-header">
-      <div className="splash">
-        {appState == 0 && <button onClick={camera_button}>Start Camera</button>}
+      <div className={appState != 0 ? "splash hidden" : "splash"}>
+        <button className="figma_svg" onClick={camera_button}>
+          <img src={PKSL} alt="PKSL logo" />
+        </button>
       </div> 
-      <div hidden={appState == 0} className="camera">
-        <video className = "mirror" id="video" autoPlay></video>
-        <button onClick={quantize_and_pixelate_img}>Pixelate Photo</button>
+      <div className={appState != 1 ? "camera hidden" : "camera"}>
+        <video className="mirror" id="video" autoPlay></video>
+        <button className="figma_svg" onClick={quantize_and_pixelate_img}>
+          <img src={shutter} alt="camera button" />
+        </button>
         <button onClick={toggle_mirror}>Toggle Mirror</button>
         <img hidden className = "mirror" id = "quantized_img"></img>
         <img className='mirror' id = "pixelated_img"></img>
