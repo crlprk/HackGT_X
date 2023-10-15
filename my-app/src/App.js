@@ -288,7 +288,8 @@ function App() {
         setTimeout(function() {
         // Use a fixed maximum so that k-means works fast.
         var pixel_dataset = get_pixel_dataset(img, MAX_K_MEANS_PIXELS);
-        var centroids = k_means([[242, 240, 229, 255], [184, 181, 185, 255], [134, 129, 136, 255], [100, 99, 101, 255], [69, 68, 79, 255], [58, 56, 88, 255], [33, 33, 35, 255], [53, 43, 66, 255], [67, 67, 106, 255], [75, 128, 202, 255], [104, 194, 211, 255], [162, 220, 199, 255], [237, 225, 158, 255], [211, 160, 104, 255], [180, 82, 82, 255], [106, 83, 110, 255], [75, 65, 88, 255], [128, 73, 58, 255], [167, 123, 91, 255], [229, 206, 180, 255], [194, 211, 104, 255], [138, 176, 96, 255], [86, 123, 121, 255], [78, 88, 74, 255], [123, 114, 67, 255], [178, 180, 126, 255], [237, 200, 196, 255], [207, 138, 203, 255], [95, 85, 106, 255]], 29);
+        var centroids = k_means([[230, 93, 159, 255], [147, 212, 181, 255], [100, 97, 194, 255], [240, 218, 177, 255], [99, 75, 125, 255], [43, 169, 180, 255], [240, 246, 232, 255]], 14);
+        console.log("centroids", centroids);
         var data_url = quantize(img, centroids);
         quantized_img_element.src = data_url;
         pixel_img.src = data_url;
@@ -404,7 +405,7 @@ function App() {
       </div> 
       <div className={appState != 1 ? "camera hidden" : "camera"}>
         <div className={/*"mirror*/ "viewfinder"}>
-          <video className="video" id="video" muted playsInline autoPlay></video>
+          <video className="video" id="video" autoPlay></video>
           <img className="pixelated" id = "pixelated_img"></img>
           <img className="viewfinder_preview" src={viewfinder_preview} alt="viewfinder preview" />
         </div>
