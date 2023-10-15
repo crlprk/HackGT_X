@@ -324,14 +324,14 @@ function App() {
 
     const constraints = {video: {
         width: {
-          // min: 1280,
-          ideal: 320,
-          max: 720,
+          min: 320,
+          ideal: 720,
+          max: 1080,
         },
         height: {
-          // min: 720,
-          ideal: 640,
-          max: 1280,
+          min: 640,
+          ideal: 1280,
+          max: 1920,
         },
         facingMode: "environment"
       }
