@@ -205,15 +205,45 @@ function App() {
     }
   };
   
-  // var post_quantize = function() {
-  //   quantize_btn_element.disabled = false;
-  //   input_file_element.disabled = false;
-  //   k_selections_element.disabled = false;
-  //   status_element.textContent = "";
-  // };
+  function pixelateImage() {
+    var originalImage = document.querySelector("#pixelated_img");
+    var pixelationFactor = 8;
+    const canvas = document.querySelector("#pixel_canvas");
+    const context = canvas.getContext("2d");
+    const originalWidth = originalImage.width;
+    const originalHeight = originalImage.height;
+    const canvasWidth = originalWidth;
+    const canvasHeight = originalHeight;
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+    context.drawImage(originalImage, 0, 0, originalWidth, originalHeight);
+    const originalImageData = context.getImageData(
+      0,
+      0,
+      originalWidth,
+      originalHeight
+    ).data;
+    if (pixelationFactor !== 0) {
+      for (let y = 0; y < originalHeight; y += pixelationFactor) {
+        for (let x = 0; x < originalWidth; x += pixelationFactor) {
+          // extracting the position of the sample pixel
+          const pixelIndexPosition = (x + y * originalWidth) * 4;
+          // drawing a square replacing the current pixels
+          context.fillStyle = `rgba(
+            ${originalImageData[pixelIndexPosition]},
+            ${originalImageData[pixelIndexPosition + 1]},
+            ${originalImageData[pixelIndexPosition + 2]},
+            ${originalImageData[pixelIndexPosition + 3]}
+          )`;
+          context.fillRect(x, y, pixelationFactor, pixelationFactor);
+        }
+      }
+    }
+    originalImage.src = canvas.toDataURL();
+  }
   
-  // Handle "Quantize" button.
-  function quantize_img() {
+  // Quantize and then pixelate image.
+  function quantize_and_pixelate_img() {
     let video = document.querySelector("#video");
     let canvas = document.querySelector("#canvas");
     let ctx = canvas.getContext('2d');
@@ -221,7 +251,8 @@ function App() {
     let imageCapture = new ImageCapture(video.srcObject.getVideoTracks()[0]);
 
     var quantized_img_element = document.querySelector("#quantized_img");
-    var k = 8;
+    var pixel_img = document.querySelector("#pixelated_img");
+    var k = 12;
 
     img.onload = function() {
       requestAnimationFrame(function() {
@@ -231,12 +262,19 @@ function App() {
         var centroids = k_means([[0, 18, 25, 255], [0, 95, 115, 255], [233, 216, 166, 255], [238, 155, 0, 255], [174, 32, 18, 255]], 5);
         var data_url = quantize(img, centroids);
         quantized_img_element.src = data_url;
+        pixel_img.src = data_url;
         }, 0);
       });
       pre_quantize();
       // ctx.scale(-1, 1);
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     };
+
+    quantized_img_element.onload = function() {
+      console.log("quantized img loaded");
+      pixelateImage();
+    };
+
     imageCapture.takePhoto().then((blob) => {
       console.log("Took photo:", blob);
       img.src = URL.createObjectURL(blob);
@@ -244,26 +282,6 @@ function App() {
     .catch((error) => {
       console.error("takePhoto() error: ", error);
     });
-
-    // var orig_img = document.querySelector("#canvas")
-    // var quantized_img_element = document.querySelector("#quantized_img");
-    // var k = 12;
-    // img.src = orig_img.toDataURL();
-    // img.onload = function() {
-    //   // Use a combination of requestAnimationFrame and setTimeout
-    //   // to run quantize/post_quantize after the next repaint, which is
-    //   // triggered by pre_quantize().
-    //   requestAnimationFrame(function() {
-    //       setTimeout(function() {
-    //       // Use a fixed maximum so that k-means works fast.
-    //       var pixel_dataset = get_pixel_dataset(img, MAX_K_MEANS_PIXELS);
-    //       var centroids = k_means(pixel_dataset, k);
-    //       var data_url = quantize(img, centroids);
-    //       quantized_img_element.src = data_url;
-    //       }, 0);
-    //   });
-    //   pre_quantize();
-    // };
   }
 
   async function camera_button() {
@@ -281,9 +299,7 @@ function App() {
           ideal: 1080,
           max: 1440,
         },
-        facingMode: {
-          exact: "environment"
-        }
+        facingMode: "environment"
       }
     }
 
@@ -326,14 +342,17 @@ function App() {
 
   return (
     <div className="App">
-      <header className = "App-header">
-        <button onClick={camera_button}>Start Camera</button>
-        <video id="video" width="1920" height="1080" autoPlay></video>
-        {/* <button onClick={click_photo}>Click Photo</button> */}
-        <button onClick={quantize_img}>Take and Quantize Photo</button>
-        <img className = "mirror" id = "quantized_img"></img>
-        <canvas hidden id="canvas" width="1080" height="1920"></canvas>
-      </header>
+    <header className = "App-header">
+      <button onClick={camera_button}>Start Camera</button>
+      <video className = "mirror" id="video" width="800" height="450" autoPlay></video>
+      {/* <button onClick={click_photo}>Click Photo</button> */}
+      <button onClick={quantize_and_pixelate_img}>Pixelate Photo</button>
+      <img hidden className = "mirror" id = "quantized_img"></img>
+      {/* <button onClick={pixelateImage}>Pixelate Photo</button> */}
+      <img className='mirror' id = "pixelated_img"></img>
+      <canvas hidden id="pixel_canvas" width="800" height="450"></canvas>
+      <canvas hidden id="canvas" width="800" height="450"></canvas>
+    </header>
     </div>
   );
 }
