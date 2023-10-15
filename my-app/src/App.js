@@ -398,14 +398,14 @@ function App() {
         </button>
       </div> 
       <div className={appState != 1 ? "camera hidden" : "camera"}>
-        <div className="mirror viewfinder">
+        <div className={/*"mirror*/ "viewfinder"}>
           <video className="video" id="video" autoPlay></video>
           <img className="pixelated" id = "pixelated_img"></img>
         </div>
         <button className="shutter" onClick={quantize_and_pixelate_img}>
           <img src={shutter} alt="camera button" />
         </button>
-        <button onClick={toggle_mirror}>Toggle Mirror</button>
+        {/*<button onClick={toggle_mirror}>Toggle Mirror</button>*/}
         <img hidden className = "mirror" id = "quantized_img"></img>
         <canvas hidden id="pixel_canvas"></canvas>
         <canvas hidden id="canvas"></canvas>
