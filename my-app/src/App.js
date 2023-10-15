@@ -282,8 +282,6 @@ function App() {
         }, 0);
       });
       pre_quantize();
-      // ctx.scale(-1, 1);
-      // ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     };
 
     quantized_img_element.onload = function() {
@@ -296,15 +294,6 @@ function App() {
       pixel_img.width = vid_width;
       console.log("img", pixel_img.height, pixel_img.width);
     };
-
-
-    // imageCapture.takePhoto().then((blob) => {
-    //   console.log("Took photo:", blob);
-    //   img.src = URL.createObjectURL(blob);
-    // })
-    // .catch((error) => {
-    //   console.error("takePhoto() error: ", error);
-    // });
 
     imageCapture.grabFrame().then((imageBitmap) => {
       console.log("Took photo:", imageBitmap);
@@ -352,6 +341,7 @@ function App() {
     }
 
 	  video.srcObject = stream;
+    setAppState(1);
   }
 
   function toggle_mirror() {
@@ -392,16 +382,19 @@ function App() {
   return (
     <div className="App">
     <header className = "App-header">
-      <button onClick={toggle_mirror}>Toggle Mirror</button>
-      <button onClick={camera_button}>Start Camera</button>
-      <video className = "mirror" id="video" autoPlay></video>
-      {/* <button onClick={click_photo}>Click Photo</button> */}
-      <button onClick={quantize_and_pixelate_img}>Pixelate Photo</button>
-      <img hidden className = "mirror" id = "quantized_img"></img>
-      {/* <button onClick={pixelateImage}>Pixelate Photo</button> */}
-      <img className='mirror' id = "pixelated_img"></img>
-      <canvas hidden id="pixel_canvas"></canvas>
-      <canvas hidden id="canvas"></canvas>
+      <div className="splash">
+        {appState == 0 && <button onClick={camera_button}>Start Camera</button>}
+      </div> 
+      <div hidden={appState == 0} className="camera">
+        <video className = "mirror" id="video" autoPlay></video>
+        <button onClick={quantize_and_pixelate_img}>Pixelate Photo</button>
+        <button onClick={toggle_mirror}>Toggle Mirror</button>
+        <img hidden className = "mirror" id = "quantized_img"></img>
+        <img className='mirror' id = "pixelated_img"></img>
+        <canvas hidden id="pixel_canvas"></canvas>
+        <canvas hidden id="canvas"></canvas>
+      </div>
+      
     </header>
     </div>
   );
