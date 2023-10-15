@@ -276,6 +276,7 @@ function App() {
 
     var quantized_img_element = document.querySelector("#quantized_img");
     var pixel_img = document.querySelector("#pixelated_img");
+    var a = document.createElement("a");
     var k = 12;
 
     img.onload = function() {
@@ -303,6 +304,9 @@ function App() {
     pixel_img.onload = function() {
       pixel_img.height = vid_height;
       pixel_img.width = vid_width;
+      a.href = pixel_img.src;
+      a.download = "pksl.png";
+      a.click();
       console.log("img", pixel_img.height, pixel_img.width);
     };
 
