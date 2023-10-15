@@ -288,7 +288,7 @@ function App() {
         setTimeout(function() {
         // Use a fixed maximum so that k-means works fast.
         var pixel_dataset = get_pixel_dataset(img, MAX_K_MEANS_PIXELS);
-        var centroids = k_means([[0, 18, 25, 255], [0, 95, 115, 255], [233, 216, 166, 255], [238, 155, 0, 255], [174, 32, 18, 255]], 5);
+        var centroids = k_means([[0, 18, 25, 255], [0, 84, 115, 255], [237, 224, 185, 255], [238, 155, 0, 255], [174, 32, 18, 255]], 5);
         console.log("centroids", centroids);
         var data_url = quantize(img, centroids);
         quantized_img_element.src = data_url;
